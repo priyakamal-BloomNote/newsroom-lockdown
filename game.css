@@ -1,0 +1,865 @@
+/* =========================================================
+   NEWSROOM LOCKDOWN
+   FUTURISTIC GAME UI
+========================================================= */
+
+
+/* =========================================================
+   GAME SCREEN
+========================================================= */
+
+#game-screen {
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 25px 32px;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            #071923 0%,
+            #02070b 65%,
+            #010305 100%
+        );
+
+    color: white;
+}
+
+
+/* =========================================================
+   GAME HEADER
+========================================================= */
+
+.game-header {
+    width: 100%;
+
+    height: 55px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+
+    align-items: center;
+
+    padding: 0 20px;
+
+    box-sizing: border-box;
+
+    background:
+        rgba(4, 15, 23, 0.95);
+
+    border-bottom: 1px solid rgba(0, 220, 255, 0.55);
+
+    box-shadow:
+        0 0 20px rgba(0, 220, 255, 0.08);
+}
+
+
+/* GAME TITLE */
+
+.game-title {
+    color: #00eaff;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    text-shadow:
+        0 0 10px rgba(0, 234, 255, 0.7);
+}
+
+
+/* TIMER */
+
+.timer-box {
+    text-align: center;
+
+    color: #ffb43b;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 10px rgba(255, 180, 59, 0.5);
+}
+
+
+/* SCORE */
+
+.score-box {
+    text-align: right;
+
+    color: #00eaff;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   ROOM TITLE
+========================================================= */
+
+.room-title {
+
+    margin: 22px 0 16px;
+
+    text-align: center;
+
+    font-size: 38px;
+
+    letter-spacing: 8px;
+
+    color: #00eaff;
+
+    text-shadow:
+        0 0 10px rgba(0, 234, 255, 0.7),
+        0 0 25px rgba(0, 234, 255, 0.3);
+}
+
+
+/* =========================================================
+   MAIN GAME LAYOUT
+========================================================= */
+
+.game-layout {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        225px;
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   NEWSROOM
+========================================================= */
+
+.game-room {
+
+    position: relative;
+
+    height: 500px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(0, 220, 255, 0.65);
+
+    border-radius: 8px;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 8, 14, 0.08),
+            rgba(0, 8, 14, 0.18)
+        ),
+        url("../media/images/newsroom.png");
+
+    background-size: cover;
+
+    background-position: center;
+
+    box-shadow:
+        0 0 25px rgba(0, 200, 255, 0.12),
+        inset 0 0 80px rgba(0, 0, 0, 0.4);
+}
+
+
+/* DARK CINEMATIC OVERLAY */
+
+.game-room::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            rgba(0, 20, 30, 0.03),
+            rgba(0, 0, 0, 0.15)
+        );
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   DECORATIVE NEWSROOM HUD
+========================================================= */
+
+.news-hud {
+
+    position: absolute;
+
+    top: 20px;
+
+    left: 22px;
+
+    width: 330px;
+
+    padding: 12px 16px;
+
+    box-sizing: border-box;
+
+    background:
+        rgba(2, 12, 19, 0.86);
+
+    border-left: 3px solid #00eaff;
+
+    border-top: 1px solid rgba(0, 220, 255, 0.35);
+
+    border-bottom: 1px solid rgba(0, 220, 255, 0.2);
+
+    z-index: 5;
+
+    box-shadow:
+        0 0 20px rgba(0, 220, 255, 0.1);
+}
+
+
+.news-hud-title {
+
+    color: #00eaff;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 7px;
+}
+
+
+.news-hud-status {
+
+    color: #63ff9b;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 7px;
+}
+
+
+.news-hud-text {
+
+    color: #d9faff;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   LOCKDOWN WARNING
+========================================================= */
+
+.lockdown-warning {
+
+    position: absolute;
+
+    top: 20px;
+
+    right: 22px;
+
+    padding: 8px 13px;
+
+    background:
+        rgba(90, 0, 0, 0.55);
+
+    border: 1px solid rgba(255, 70, 70, 0.7);
+
+    color: #ff5757;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    z-index: 5;
+
+    animation: lockdownPulse 2s infinite;
+}
+
+
+@keyframes lockdownPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+
+/* =========================================================
+   INTERACTIVE OBJECTS
+========================================================= */
+
+.object {
+
+    position: absolute;
+
+    width: 105px;
+
+    height: 105px;
+
+    padding: 8px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    background:
+        rgba(0, 13, 22, 0.72);
+
+    border: 2px solid rgba(0, 220, 255, 0.8);
+
+    border-radius: 14px;
+
+    color: white;
+
+    cursor: pointer;
+
+    z-index: 10;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.object:hover {
+
+    transform:
+        translateY(-5px)
+        scale(1.06);
+
+    background:
+        rgba(0, 220, 255, 0.13);
+
+    border-color: #00eaff;
+
+    box-shadow:
+        0 0 12px #00eaff,
+        0 0 30px rgba(0, 220, 255, 0.45);
+}
+
+
+.object:active {
+
+    transform:
+        scale(0.97);
+}
+
+
+/* =========================================================
+   OBJECT ICON
+========================================================= */
+
+.object-icon {
+
+    width: 45px;
+
+    height: 45px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 0 7px #00eaff
+        );
+}
+
+
+/* OBJECT LABEL */
+
+.object span {
+
+    color: #eafcff;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.7);
+}
+
+
+/* =========================================================
+   OBJECT POSITIONS
+========================================================= */
+
+.desk-object {
+
+    left: 17%;
+
+    bottom: 18%;
+}
+
+
+.files-object {
+
+    left: 42%;
+
+    top: 14%;
+}
+
+
+.computer-object {
+
+    left: 52%;
+
+    bottom: 22%;
+}
+
+
+.server-object {
+
+    right: 14%;
+
+    top: 15%;
+}
+
+
+.exit-object {
+
+    right: 16%;
+
+    bottom: 25%;
+}
+
+
+/* =========================================================
+   EXIT
+========================================================= */
+
+.exit-object {
+
+    border-color:
+        rgba(255, 70, 70, 0.75);
+}
+
+
+.exit-object:hover {
+
+    border-color: #ff4d4d;
+
+    box-shadow:
+        0 0 15px #ff4d4d,
+        0 0 30px rgba(255, 50, 50, 0.35);
+}
+
+
+/* =========================================================
+   INVENTORY
+========================================================= */
+
+#inventory {
+
+    height: 500px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(4, 19, 28, 0.97),
+            rgba(2, 9, 15, 0.97)
+        );
+
+    border: 1px solid rgba(0, 220, 255, 0.65);
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 0 25px rgba(0, 220, 255, 0.08);
+}
+
+
+#inventory h3 {
+
+    margin: 0 0 18px;
+
+    color: #00eaff;
+
+    font-size: 18px;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 10px rgba(0, 234, 255, 0.5);
+}
+
+
+#inventory-items {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* EMPTY INVENTORY */
+
+#inventory-items:empty {
+
+    color: #7f9aa7;
+}
+
+
+/* INVENTORY ITEM */
+
+.inventory-item {
+
+    min-height: 55px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+
+    background:
+        rgba(0, 25, 35, 0.75);
+
+    border: 1px solid rgba(0, 220, 255, 0.3);
+
+    border-radius: 7px;
+
+    color: #d9faff;
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   MESSAGE / SYSTEM CONSOLE
+========================================================= */
+
+#message-box {
+
+    min-height: 60px;
+
+    margin-top: 18px;
+
+    padding: 16px 22px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+        rgba(3, 16, 24, 0.96);
+
+    border: 1px solid rgba(0, 220, 255, 0.65);
+
+    border-radius: 8px;
+
+    border-left: 3px solid #00eaff;
+
+    color: #9bc7d5;
+
+    font-size: 14px;
+
+    letter-spacing: 0.5px;
+
+    box-shadow:
+        0 0 20px rgba(0, 220, 255, 0.08);
+}
+
+
+#message-box::before {
+
+    content: ">";
+
+    margin-right: 12px;
+
+    color: #00eaff;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    text-shadow:
+        0 0 8px #00eaff;
+}
+
+
+/* =========================================================
+   PUZZLE MODAL
+========================================================= */
+
+#puzzle-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 0, 0, 0.78);
+
+    backdrop-filter:
+        blur(5px);
+
+    z-index: 1000;
+}
+
+
+#puzzle-modal.hidden {
+
+    display: none;
+}
+
+
+.puzzle-box {
+
+    width: 520px;
+
+    max-width: 90%;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            145deg,
+            #071b25,
+            #02090e
+        );
+
+    border: 1px solid #00eaff;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 0 30px rgba(0, 220, 255, 0.25);
+}
+
+
+#puzzle-title {
+
+    margin-top: 0;
+
+    color: #00eaff;
+
+    font-size: 24px;
+
+    letter-spacing: 3px;
+}
+
+
+.puzzle-description {
+
+    color: #b9d5df;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+
+.puzzle-input {
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 13px;
+
+    box-sizing: border-box;
+
+    background:
+        #020a0f;
+
+    border: 1px solid rgba(0, 220, 255, 0.5);
+
+    border-radius: 5px;
+
+    color: white;
+
+    outline: none;
+}
+
+
+.puzzle-input:focus {
+
+    border-color: #00eaff;
+
+    box-shadow:
+        0 0 12px rgba(0, 220, 255, 0.2);
+}
+
+
+.puzzle-btn {
+
+    margin-top: 15px;
+
+    padding: 11px 25px;
+
+    background:
+        rgba(0, 220, 255, 0.12);
+
+    border: 1px solid #00eaff;
+
+    border-radius: 5px;
+
+    color: #00eaff;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+
+.puzzle-btn:hover {
+
+    background:
+        rgba(0, 220, 255, 0.25);
+
+    box-shadow:
+        0 0 15px rgba(0, 220, 255, 0.3);
+}
+
+
+#close-modal {
+
+    float: right;
+
+    background: none;
+
+    border: none;
+
+    color: #ff5b5b;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .game-layout {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    #inventory {
+
+        height: auto;
+
+        min-height: 180px;
+
+    }
+
+    .game-room {
+
+        height: 500px;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    #game-screen {
+
+        padding: 15px;
+
+    }
+
+    .game-header {
+
+        grid-template-columns: 1fr;
+
+        height: auto;
+
+        gap: 8px;
+
+        padding: 12px;
+
+    }
+
+    .game-title,
+    .timer-box,
+    .score-box {
+
+        text-align: center;
+
+    }
+
+    .room-title {
+
+        font-size: 25px;
+
+        letter-spacing: 4px;
+
+    }
+
+}

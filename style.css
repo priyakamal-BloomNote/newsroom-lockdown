@@ -1,0 +1,188 @@
+/* ==============================
+   NEWSROOM LOCKDOWN
+   Main Styles
+   ============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #05070a;
+    color: white;
+    overflow: hidden;
+}
+
+/* ==============================
+   START SCREEN
+   ============================== */
+
+#start-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.75),
+            rgba(0, 0, 0, 0.9)
+        ),
+        url("../media/images/newsroom.png");
+
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Dark overlay */
+
+.overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 0%,
+            rgba(0, 0, 0, 0.7) 80%
+        );
+}
+
+/* ==============================
+   CONTENT
+   ============================== */
+
+.start-content {
+    position: relative;
+    z-index: 2;
+
+    text-align: center;
+    max-width: 800px;
+    padding: 40px;
+}
+
+/* Live indicator */
+
+.status {
+    display: inline-block;
+
+    margin-bottom: 25px;
+    padding: 8px 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+
+    font-size: 12px;
+    letter-spacing: 3px;
+
+    color: #ff4d4d;
+}
+
+/* Main title */
+
+h1 {
+    font-size: clamp(50px, 8vw, 100px);
+    line-height: 0.9;
+    letter-spacing: 8px;
+    font-weight: 900;
+
+    text-shadow:
+        0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+h1 span {
+    color: #ff3b30;
+}
+
+/* Tagline */
+
+.tagline {
+    margin-top: 35px;
+
+    font-size: 20px;
+    color: #d8d8d8;
+}
+
+/* Mission */
+
+.mission {
+    margin-top: 12px;
+
+    font-size: 14px;
+    color: #888;
+
+    letter-spacing: 2px;
+}
+
+/* ==============================
+   START BUTTON
+   ============================== */
+
+#start-btn {
+    margin-top: 40px;
+
+    padding: 16px 45px;
+
+    border: none;
+    border-radius: 4px;
+
+    background: #ff3b30;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 3px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+#start-btn:hover {
+    transform: scale(1.05);
+
+    box-shadow:
+        0 0 30px rgba(255, 59, 48, 0.6);
+}
+
+/* Hint */
+
+.hint {
+    margin-top: 18px;
+
+    font-size: 11px;
+    color: #666;
+
+    letter-spacing: 2px;
+}
+
+/* ==============================
+   GAME SCREEN
+   ============================== */
+
+#game-screen {
+    display: none;
+
+    width: 100vw;
+    height: 100vh;
+
+    padding: 50px;
+
+    background: #080b10;
+}
+
+#game-screen h2 {
+    font-size: 40px;
+    color: #ff3b30;
+}
+
+#game-screen p {
+    margin-top: 20px;
+    color: #aaa;
+}

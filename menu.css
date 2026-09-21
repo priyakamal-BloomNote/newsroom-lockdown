@@ -1,0 +1,52 @@
+#menu-screen {
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(circle at center,
+        #10202b 0%,
+        #05080d 55%,
+        #020305 100%);
+}
+
+.menu-container {
+    width: 90%;
+    max-width: 650px;
+    text-align: center;
+    padding: 60px 30px;
+    border: 1px solid #173c48;
+    background: rgba(5, 15, 22, 0.9);
+    box-shadow: 0 0 50px rgba(0, 229, 255, 0.1);
+}
+
+.system-label {
+    color: #00e5ff;
+    font-size: 13px;
+    margin-bottom: 35px;
+}
+
+.menu-container h1 {
+    font-size: 64px;
+    letter-spacing: 12px;
+}
+
+.menu-container h2 {
+    color: #00e5ff;
+    font-size: 30px;
+    letter-spacing: 8px;
+    margin-top: 5px;
+}
+
+.tagline {
+    color: #879ba4;
+    line-height: 1.8;
+    margin: 30px 0 40px;
+}
+
+.instructions {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid #18343e;
+    color: #9db1b9;
+    line-height: 2;
+}

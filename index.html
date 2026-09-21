@@ -1,0 +1,2018 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Newsroom Lockdown</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- GAME CSS -->
+    <link rel="stylesheet" href="css/game.css">
+
+    <!-- MENU CSS -->
+    <link rel="stylesheet" href="css/menu.css">
+
+    <style>
+
+        /* =================================================
+           SCREEN CONTROL
+        ================================================= */
+
+        #end-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow-y: auto;
+
+            background:
+                linear-gradient(
+                    rgba(1, 9, 18, 0.72),
+                    rgba(1, 9, 18, 0.92)
+                ),
+                url("media/images/newsroom.png");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            color: white;
+            z-index: 99999;
+        }
+
+        #end-screen.active {
+            display: block;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+
+        /* =================================================
+           GAME SCREEN
+        ================================================= */
+
+        #game-screen {
+            width: 100%;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(0, 234, 255, 0.05),
+                    transparent 45%
+                ),
+                #02080d;
+
+            color: white;
+        }
+
+
+        /* =================================================
+           GAME LAYOUT
+        ================================================= */
+
+        .game-area {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 20px 30px;
+            box-sizing: border-box;
+        }
+
+
+        /* =================================================
+           ROOM + INVENTORY
+        ================================================= */
+
+        .game-layout {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                230px;
+
+            gap: 18px;
+
+            width: 100%;
+        }
+
+
+        /* =================================================
+           ROOM
+        ================================================= */
+
+        .room {
+            position: relative;
+            width: 100%;
+            height: 500px;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 10, 18, 0.10),
+                    rgba(0, 8, 15, 0.20)
+                ),
+                url("media/images/newsroom.png");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            border: 1px solid rgba(0, 234, 255, 0.75);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 0 25px rgba(0, 220, 255, 0.10),
+                inset 0 0 40px rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =================================================
+           ROOM HUD
+        ================================================= */
+
+        .room-hud {
+            position: absolute;
+
+            top: 18px;
+            left: 20px;
+
+            width: 320px;
+
+            padding: 12px 16px;
+
+            background:
+                rgba(2, 13, 20, 0.88);
+
+            border-left:
+                3px solid #00eaff;
+
+            border-top:
+                1px solid rgba(0, 220, 255, 0.35);
+
+            border-bottom:
+                1px solid rgba(0, 220, 255, 0.25);
+
+            z-index: 5;
+
+            box-shadow:
+                0 0 20px rgba(0, 220, 255, 0.12);
+
+            backdrop-filter: blur(6px);
+        }
+
+
+        .room-hud-title {
+            color: #00eaff;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .room-hud-status {
+            color: #5dff9a;
+
+            font-size: 10px;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .room-hud-text {
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =================================================
+           LOCKDOWN WARNING
+        ================================================= */
+
+        .lockdown-warning {
+            position: absolute;
+
+            top: 18px;
+            right: 20px;
+
+            padding: 8px 12px;
+
+            background:
+                rgba(90, 0, 0, 0.55);
+
+            border:
+                1px solid rgba(255, 65, 65, 0.7);
+
+            color: #ff5555;
+
+            font-size: 10px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            z-index: 5;
+
+            animation:
+                warningPulse 2s infinite;
+
+            box-shadow:
+                0 0 15px rgba(255, 50, 50, 0.12);
+        }
+
+
+        @keyframes warningPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.45;
+            }
+        }
+
+
+        /* =================================================
+           OBJECT BUTTONS
+        ================================================= */
+
+        .object {
+            position: absolute;
+
+            width: 105px;
+            height: 105px;
+
+            padding: 10px;
+
+            box-sizing: border-box;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 8px;
+
+            background:
+                rgba(0, 12, 21, 0.72);
+
+            border:
+                2px solid rgba(0, 225, 255, 0.85);
+
+            border-radius: 14px;
+
+            color: white;
+
+            cursor: pointer;
+
+            z-index: 10;
+
+            transition:
+                all 0.22s ease;
+
+            backdrop-filter:
+                blur(4px);
+
+            box-shadow:
+                0 0 12px rgba(0, 225, 255, 0.08);
+        }
+
+
+        .object:hover {
+            transform:
+                translateY(-5px)
+                scale(1.06);
+
+            background:
+                rgba(0, 220, 255, 0.14);
+
+            border-color:
+                #00eaff;
+
+            box-shadow:
+                0 0 12px #00eaff,
+                0 0 30px rgba(0, 220, 255, 0.45);
+        }
+
+
+        .object:active {
+            transform:
+                scale(0.96);
+        }
+
+
+        .object-icon {
+            width: 44px;
+            height: 44px;
+
+            object-fit: contain;
+
+            filter:
+                drop-shadow(
+                    0 0 8px #00eaff
+                );
+        }
+
+
+        .object span {
+            color: #eaffff;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            text-shadow:
+                0 0 8px rgba(0, 234, 255, 0.8);
+        }
+
+
+        /* =================================================
+           OBJECT POSITIONS
+        ================================================= */
+
+        .desk-object {
+            left: 17%;
+            bottom: 17%;
+        }
+
+
+        .files-object {
+            left: 42%;
+            top: 14%;
+        }
+
+
+        .computer-object {
+            left: 53%;
+            bottom: 22%;
+        }
+
+
+        .server-object {
+            right: 14%;
+            top: 15%;
+        }
+
+
+        .exit-object {
+            right: 16%;
+            bottom: 25%;
+
+            border-color:
+                rgba(255, 75, 75, 0.8);
+        }
+
+
+        .exit-object:hover {
+            border-color:
+                #ff4d4d;
+
+            box-shadow:
+                0 0 15px #ff4d4d,
+                0 0 30px rgba(255, 50, 50, 0.35);
+        }
+
+
+        /* =================================================
+           INVENTORY
+        ================================================= */
+
+        .inventory {
+            min-height: 500px;
+
+            padding: 18px;
+
+            box-sizing: border-box;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(4, 20, 29, 0.98),
+                    rgba(2, 9, 15, 0.98)
+                );
+
+            border:
+                1px solid rgba(0, 220, 255, 0.65);
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 0 25px rgba(0, 220, 255, 0.08);
+
+            backdrop-filter:
+                blur(8px);
+        }
+
+
+        .inventory-title {
+            margin-bottom: 18px;
+
+            color: #00eaff;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            text-shadow:
+                0 0 10px rgba(0, 234, 255, 0.6);
+        }
+
+
+        #inventory-items {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+            color: #a9c7d1;
+
+            font-size: 13px;
+        }
+
+
+        /* =================================================
+           SYSTEM MESSAGE
+        ================================================= */
+
+        .message-box {
+            width: 100%;
+
+            min-height: 62px;
+
+            margin-top: 18px;
+
+            padding: 15px 20px;
+
+            box-sizing: border-box;
+
+            display: flex;
+
+            align-items: center;
+
+            background:
+                rgba(3, 16, 24, 0.96);
+
+            border:
+                1px solid rgba(0, 220, 255, 0.6);
+
+            border-left:
+                3px solid #00eaff;
+
+            border-radius: 8px;
+
+            color: #9bc7d5;
+
+            font-size: 14px;
+
+            letter-spacing: 0.5px;
+
+            box-shadow:
+                0 0 20px rgba(0, 220, 255, 0.08);
+        }
+
+
+        /* =================================================
+           PUZZLE MODAL
+        ================================================= */
+
+        .modal {
+            position: fixed;
+
+            inset: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(0, 0, 0, 0.8);
+
+            backdrop-filter:
+                blur(5px);
+
+            z-index: 9999;
+        }
+
+
+        .modal-content {
+            width: 520px;
+
+            max-width: 90%;
+
+            padding: 30px;
+
+            box-sizing: border-box;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #071c27,
+                    #02090e
+                );
+
+            border:
+                1px solid #00eaff;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 0 35px rgba(0, 220, 255, 0.25);
+
+            color: white;
+        }
+
+
+        #puzzle-title {
+            margin-top: 0;
+
+            color: #00eaff;
+
+            letter-spacing: 3px;
+        }
+
+
+        #puzzle-content {
+            color: #b9d5df;
+
+            line-height: 1.6;
+        }
+
+
+        .close-btn {
+            float: right;
+
+            background: none;
+
+            border: none;
+
+            color: #ff5555;
+
+            font-size: 28px;
+
+            cursor: pointer;
+        }
+
+
+        /* =================================================
+           VICTORY / RESULT PAGE
+        ================================================= */
+
+        .end-container {
+            width: min(1100px, 92%);
+
+            min-height: 100vh;
+
+            margin: 0 auto;
+
+            padding: 45px 0 35px;
+
+            box-sizing: border-box;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            text-align: center;
+        }
+
+
+        .end-brand {
+            color: #ffffff;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+            letter-spacing: 5px;
+
+            text-transform: uppercase;
+
+            text-shadow:
+                0 0 12px rgba(0, 234, 255, 0.45);
+
+            margin-bottom: 8px;
+        }
+
+
+        .end-brand span {
+            color: #00eaff;
+        }
+
+
+        .end-tagline {
+            color: #7f9ca8;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+
+            letter-spacing: 4px;
+
+            font-weight: 600;
+
+            margin-bottom: 22px;
+        }
+
+
+        .success-lock {
+            width: 72px;
+            height: 72px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 12px;
+
+            border: 1px solid rgba(93, 255, 154, 0.55);
+
+            border-radius: 50%;
+
+            background:
+                rgba(20, 80, 50, 0.20);
+
+            font-size: 38px;
+
+            box-shadow:
+                0 0 20px rgba(93, 255, 154, 0.25),
+                0 0 50px rgba(93, 255, 154, 0.08);
+        }
+
+
+        .clear-title {
+            margin: 0;
+
+            color: #5dff9a;
+
+            font-size: clamp(34px, 5vw, 62px);
+
+            font-weight: 900;
+
+            letter-spacing: 6px;
+
+            text-transform: uppercase;
+
+            text-shadow:
+                0 0 10px rgba(93, 255, 154, 0.8),
+                0 0 35px rgba(93, 255, 154, 0.35);
+        }
+
+
+        .escape-title {
+            margin: 7px 0 15px;
+
+            color: #ffffff;
+
+            font-size: clamp(19px, 3vw, 30px);
+
+            letter-spacing: 6px;
+
+            font-weight: 800;
+        }
+
+
+        .success-message {
+            margin: 0 0 28px;
+
+            color: #9fb8c2;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        /* =================================================
+           RESULT STATISTICS
+        ================================================= */
+
+        .result-stats {
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .stat-item {
+            min-height: 85px;
+
+            padding: 14px 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            box-sizing: border-box;
+
+            text-align: left;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(7, 27, 38, 0.90),
+                    rgba(2, 12, 19, 0.90)
+                );
+
+            border:
+                1px solid rgba(0, 234, 255, 0.28);
+
+            border-radius: 8px;
+
+            box-shadow:
+                inset 0 0 20px rgba(0, 234, 255, 0.025),
+                0 0 18px rgba(0, 0, 0, 0.25);
+
+            backdrop-filter:
+                blur(8px);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+
+            border-color:
+                rgba(0, 234, 255, 0.6);
+
+            box-shadow:
+                0 0 20px rgba(0, 234, 255, 0.10);
+        }
+
+
+        .stat-icon {
+            width: 43px;
+            height: 43px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 234, 255, 0.30);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 234, 255, 0.07);
+
+            font-size: 20px;
+        }
+
+
+        .stat-info {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 4px;
+        }
+
+
+        .stat-label {
+            color: #718c97;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+        }
+
+
+        .stat-info strong {
+            color: #ffffff;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        .score-icon {
+            text-shadow:
+                0 0 10px rgba(255, 220, 80, 0.7);
+        }
+
+
+        .puzzle-icon {
+            text-shadow:
+                0 0 10px rgba(0, 234, 255, 0.7);
+        }
+
+
+        .time-icon {
+            text-shadow:
+                0 0 10px rgba(100, 220, 255, 0.7);
+        }
+
+
+        .clue-icon {
+            text-shadow:
+                0 0 10px rgba(100, 220, 255, 0.7);
+        }
+
+
+        .accuracy-icon {
+            text-shadow:
+                0 0 10px rgba(93, 255, 154, 0.7);
+        }
+
+
+        .reward-icon {
+            text-shadow:
+                0 0 10px rgba(255, 220, 80, 0.7);
+        }
+
+
+        /* =================================================
+           YOUR JOURNEY
+        ================================================= */
+
+        .journey-section {
+            width: 100%;
+
+            margin-bottom: 28px;
+
+            padding: 20px;
+
+            box-sizing: border-box;
+
+            background:
+                rgba(2, 13, 20, 0.76);
+
+            border:
+                1px solid rgba(0, 234, 255, 0.20);
+
+            border-radius: 10px;
+
+            backdrop-filter:
+                blur(10px);
+        }
+
+
+        .journey-title {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 14px;
+
+            margin-bottom: 20px;
+
+            color: #00eaff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 4px;
+        }
+
+
+        .journey-title span {
+            width: 100px;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(0, 234, 255, 0.55)
+                );
+        }
+
+
+        .journey-title span:last-child {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 234, 255, 0.55),
+                    transparent
+                );
+        }
+
+
+        .journey {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 13px;
+        }
+
+
+        .journey-step {
+            min-width: 125px;
+
+            padding: 10px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .journey-icon {
+            width: 50px;
+            height: 50px;
+
+            margin-bottom: 7px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 234, 255, 0.45);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 234, 255, 0.07);
+
+            font-size: 23px;
+
+            box-shadow:
+                0 0 15px rgba(0, 234, 255, 0.08);
+        }
+
+
+        .journey-name {
+            color: #e9fbff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+
+        .journey-reward {
+            margin-top: 4px;
+
+            color: #68828c;
+
+            font-size: 8px;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .journey-arrow {
+            color: #00eaff;
+
+            font-size: 22px;
+
+            opacity: 0.65;
+
+            text-shadow:
+                0 0 10px rgba(0, 234, 255, 0.7);
+        }
+
+
+        /* =================================================
+           PLAY AGAIN
+        ================================================= */
+
+        .play-again-btn {
+            min-width: 220px;
+
+            padding: 14px 30px;
+
+            margin-bottom: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 234, 255, 0.16),
+                    rgba(0, 120, 160, 0.12)
+                );
+
+            border:
+                1px solid #00eaff;
+
+            border-radius: 6px;
+
+            color: #eaffff;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 3px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 18px rgba(0, 234, 255, 0.12);
+
+            transition:
+                all 0.22s ease;
+        }
+
+
+        .play-again-btn:hover {
+            background:
+                rgba(0, 234, 255, 0.20);
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 0 20px rgba(0, 234, 255, 0.35),
+                0 0 45px rgba(0, 234, 255, 0.10);
+        }
+
+
+        .play-again-btn:active {
+            transform:
+                scale(0.97);
+        }
+
+
+        .end-footer {
+            color: #49616b;
+
+            font-size: 8px;
+
+            letter-spacing: 4px;
+
+            margin-top: auto;
+        }
+
+
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (max-width: 950px) {
+
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .inventory {
+                min-height: 160px;
+            }
+
+            .room {
+                height: 500px;
+            }
+
+            .result-stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .journey {
+                flex-wrap: wrap;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .game-area {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .room {
+                height: 550px;
+            }
+
+            .room-hud {
+                width: 250px;
+            }
+
+            .object {
+                width: 85px;
+                height: 85px;
+            }
+
+            .object-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .object span {
+                font-size: 9px;
+            }
+
+            .result-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .end-container {
+                width: 92%;
+                padding-top: 30px;
+            }
+
+            .clear-title {
+                font-size: 32px;
+                letter-spacing: 3px;
+            }
+
+            .escape-title {
+                font-size: 18px;
+                letter-spacing: 3px;
+            }
+
+            .success-message {
+                font-size: 11px;
+            }
+
+            .success-message br {
+                display: none;
+            }
+
+            .journey {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .journey-arrow {
+                transform: rotate(90deg);
+            }
+
+            .journey-title span {
+                width: 35px;
+            }
+
+        }
+/* =================================================
+   FINAL VICTORY PAGE OVERRIDE
+================================================= */
+
+#end-screen {
+    display: none !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    overflow-y: auto !important;
+
+    background:
+        linear-gradient(
+            rgba(0, 7, 15, 0.82),
+            rgba(0, 7, 15, 0.94)
+        ),
+        url("media/images/newsroom.png") center center / cover no-repeat !important;
+
+    z-index: 99999 !important;
+    color: white !important;
+}
+
+#end-screen.active {
+    display: block !important;
+}
+
+.end-container {
+    width: 90% !important;
+    max-width: 1100px !important;
+    min-height: 100vh !important;
+
+    margin: 0 auto !important;
+    padding: 45px 0 !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+
+    text-align: center !important;
+}
+
+.end-brand {
+    color: white !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    letter-spacing: 5px !important;
+    margin-bottom: 8px !important;
+}
+
+.end-brand span {
+    color: #00eaff !important;
+}
+
+.end-tagline {
+    color: #8ca5af !important;
+    font-size: 10px !important;
+    letter-spacing: 4px !important;
+    line-height: 1.7 !important;
+    margin-bottom: 25px !important;
+}
+
+.success-lock {
+    width: 70px !important;
+    height: 70px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid #5dff9a !important;
+    border-radius: 50% !important;
+
+    background: rgba(50, 255, 140, 0.08) !important;
+
+    font-size: 36px !important;
+
+    box-shadow:
+        0 0 20px rgba(93, 255, 154, 0.35),
+        0 0 50px rgba(93, 255, 154, 0.12) !important;
+
+    margin-bottom: 15px !important;
+}
+
+.clear-title {
+    margin: 0 !important;
+
+    color: #5dff9a !important;
+
+    font-size: 55px !important;
+    font-weight: 900 !important;
+
+    letter-spacing: 5px !important;
+
+    text-shadow:
+        0 0 10px #5dff9a,
+        0 0 30px rgba(93, 255, 154, 0.5) !important;
+}
+
+.escape-title {
+    margin: 8px 0 15px !important;
+
+    color: white !important;
+
+    font-size: 27px !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 5px !important;
+}
+
+.success-message {
+    color: #9bb5bf !important;
+
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+
+    margin: 0 0 30px !important;
+}
+
+
+/* ==============================
+   STATISTICS
+============================== */
+
+.result-stats {
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns: repeat(3, 1fr) !important;
+
+    gap: 14px !important;
+
+    margin-bottom: 30px !important;
+}
+
+.stat-item {
+    min-height: 85px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 14px !important;
+
+    padding: 15px !important;
+
+    box-sizing: border-box !important;
+
+    text-align: left !important;
+
+    background:
+        rgba(4, 20, 30, 0.88) !important;
+
+    border:
+        1px solid rgba(0, 234, 255, 0.35) !important;
+
+    border-radius: 9px !important;
+
+    box-shadow:
+        0 0 20px rgba(0, 234, 255, 0.07) !important;
+
+    backdrop-filter: blur(10px) !important;
+}
+
+.stat-icon {
+    width: 45px !important;
+    height: 45px !important;
+
+    flex-shrink: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid rgba(0, 234, 255, 0.35) !important;
+    border-radius: 8px !important;
+
+    background: rgba(0, 234, 255, 0.07) !important;
+
+    font-size: 21px !important;
+}
+
+.stat-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+}
+
+.stat-label {
+    color: #718b96 !important;
+
+    font-size: 9px !important;
+    font-weight: 700 !important;
+
+    letter-spacing: 2px !important;
+}
+
+.stat-info strong {
+    color: white !important;
+
+    font-size: 22px !important;
+    font-weight: 800 !important;
+}
+
+
+/* ==============================
+   JOURNEY
+============================== */
+
+.journey-section {
+    width: 100% !important;
+
+    padding: 20px !important;
+
+    box-sizing: border-box !important;
+
+    background:
+        rgba(2, 13, 20, 0.82) !important;
+
+    border:
+        1px solid rgba(0, 234, 255, 0.25) !important;
+
+    border-radius: 10px !important;
+
+    margin-bottom: 28px !important;
+
+    backdrop-filter: blur(10px) !important;
+}
+
+.journey-title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 15px !important;
+
+    color: #00eaff !important;
+
+    font-size: 10px !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 4px !important;
+
+    margin-bottom: 20px !important;
+}
+
+.journey-title span {
+    width: 100px !important;
+    height: 1px !important;
+
+    background: rgba(0, 234, 255, 0.4) !important;
+}
+
+.journey {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 12px !important;
+}
+
+.journey-step {
+    min-width: 120px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+
+    padding: 8px !important;
+}
+
+.journey-icon {
+    width: 50px !important;
+    height: 50px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid rgba(0, 234, 255, 0.4) !important;
+
+    border-radius: 10px !important;
+
+    background:
+        rgba(0, 234, 255, 0.07) !important;
+
+    font-size: 23px !important;
+
+    margin-bottom: 7px !important;
+}
+
+.journey-name {
+    color: white !important;
+
+    font-size: 10px !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 2px !important;
+}
+
+.journey-reward {
+    color: #68828c !important;
+
+    font-size: 8px !important;
+
+    margin-top: 4px !important;
+}
+
+.journey-arrow {
+    color: #00eaff !important;
+
+    font-size: 22px !important;
+
+    text-shadow:
+        0 0 10px #00eaff !important;
+}
+
+
+/* ==============================
+   PLAY AGAIN
+============================== */
+
+.play-again-btn {
+    min-width: 220px !important;
+
+    padding: 14px 30px !important;
+
+    background:
+        rgba(0, 234, 255, 0.08) !important;
+
+    border:
+        1px solid #00eaff !important;
+
+    border-radius: 6px !important;
+
+    color: #eaffff !important;
+
+    font-size: 12px !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 3px !important;
+
+    cursor: pointer !important;
+
+    box-shadow:
+        0 0 20px rgba(0, 234, 255, 0.15) !important;
+
+    margin-bottom: 20px !important;
+}
+
+.play-again-btn:hover {
+    background:
+        rgba(0, 234, 255, 0.20) !important;
+
+    box-shadow:
+        0 0 30px rgba(0, 234, 255, 0.35) !important;
+
+    transform: translateY(-2px) !important;
+}
+
+.end-footer {
+    color: #4c6872 !important;
+
+    font-size: 8px !important;
+
+    letter-spacing: 4px !important;
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 700px) {
+
+    .result-stats {
+        grid-template-columns: 1fr !important;
+    }
+
+    .journey {
+        flex-wrap: wrap !important;
+    }
+
+    .clear-title {
+        font-size: 34px !important;
+        letter-spacing: 3px !important;
+    }
+
+    .escape-title {
+        font-size: 19px !important;
+    }
+
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         START SCREEN
+         ========================================= -->
+
+    <div id="start-screen">
+
+        <div class="overlay"></div>
+
+        <div class="start-content">
+
+            <div class="status">
+                â— LIVE SYSTEM
+            </div>
+
+            <h1>
+                NEWSROOM<br>
+                <span>LOCKDOWN</span>
+            </h1>
+
+            <p class="tagline">
+                You are trapped inside a digital newsroom.
+            </p>
+
+            <p class="mission">
+                Find the truth. Unlock the newsroom. Escape.
+            </p>
+
+            <button id="start-btn">
+                START GAME
+            </button>
+
+            <p class="hint">
+                Click to begin
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         GAME SCREEN
+         ========================================= -->
+
+    <div id="game-screen">
+
+
+        <!-- GAME HEADER -->
+
+        <div class="game-header">
+
+            <div class="logo-small">
+                NEWSROOM
+                <span class="lockdown">
+                    LOCKDOWN
+                </span>
+            </div>
+
+
+            <div class="timer-box">
+
+                TIME:
+
+                <span id="timer">
+                    10:00
+                </span>
+
+            </div>
+
+
+            <div class="score-box">
+
+                SCORE:
+
+                <span id="score">
+                    1000
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- GAME AREA -->
+
+        <div class="game-area">
+
+
+            <h2 class="room-title">
+                DIGITAL NEWSROOM
+            </h2>
+
+
+
+            <!-- ROOM -->
+
+            <div class="room">
+
+    <!-- DESK -->
+    <button
+        class="object desk-object"
+        data-object="desk">
+
+        <img
+            src="icons/key.png"
+            class="object-icon"
+            alt="Desk">
+
+        <span>DESK</span>
+
+    </button>
+
+
+    <!-- FILES -->
+    <button
+        class="object files-object"
+        data-object="files">
+
+        <img
+            src="icons/file.png"
+            class="object-icon"
+            alt="Files">
+
+        <span>FILES</span>
+
+    </button>
+
+
+    <!-- COMPUTER -->
+    <button
+        class="object computer-object"
+        data-object="computer">
+
+        <img
+            src="icons/password.png"
+            class="object-icon"
+            alt="Computer">
+
+        <span>COMPUTER</span>
+
+    </button>
+
+
+    <!-- SERVER -->
+    <button
+        class="object server-object"
+        data-object="server">
+
+        <img
+            src="icons/server.png"
+            class="object-icon"
+            alt="Server">
+
+        <span>SERVER</span>
+
+    </button>
+
+
+    <!-- EXIT -->
+    <button
+        class="object exit-object"
+        data-object="exit">
+
+        <img
+            src="icons/exit.png"
+            class="object-icon"
+            alt="Exit">
+
+        <span>EXIT</span>
+
+    </button>
+
+</div>
+
+
+
+            <!-- SYSTEM MESSAGE -->
+
+            <div
+                id="message-box"
+                class="message-box">
+
+                SYSTEM:
+                Find the clues and unlock the newsroom.
+
+            </div>
+
+
+
+            <!-- INVENTORY -->
+
+            <div class="inventory">
+
+                <div class="inventory-title">
+                    INVENTORY
+                </div>
+
+                <div id="inventory-items">
+                    Empty
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             PUZZLE MODAL
+             ===================================== -->
+
+        <div
+            id="puzzle-modal"
+            class="modal hidden">
+
+
+            <div class="modal-content">
+
+
+                <button
+                    id="close-modal"
+                    class="close-btn">
+
+                    Ã—
+
+                </button>
+
+
+
+                <h2 id="puzzle-title">
+                    Puzzle
+                </h2>
+
+
+
+                <div id="puzzle-content">
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         END SCREEN
+         ========================================= -->
+
+    <div id="end-screen">
+
+        <div class="end-container">
+
+            <div class="end-brand">
+                <span>NEWS</span>ROOM LOCKDOWN
+            </div>
+
+            <div class="end-tagline">
+                REAL NEWS. REAL IMPACT.<br>
+                THE TRUTH WINS.
+            </div>
+
+            <div class="success-lock">&#128274;</div>
+
+            <h1 class="clear-title">
+                LOCKDOWN CLEARED
+            </h1>
+
+            <h2 class="escape-title">
+                YOU ESCAPED!
+            </h2>
+
+            <p class="success-message">
+                The newsroom has been successfully unlocked.<br>
+                Your quick thinking, knowledge and attention to detail<br>
+                made the difference.
+            </p>
+
+            <div class="result-stats">
+                <div class="stat-item">
+                    <div class="stat-icon score-icon">&#11088;</div>
+                    <div class="stat-info">
+                        <span class="stat-label">FINAL SCORE</span>
+                        <strong id="final-score">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-icon puzzle-icon">&#129513;</div>
+                    <div class="stat-info">
+                        <span class="stat-label">PUZZLES SOLVED</span>
+                        <strong id="final-puzzles">0/5</strong>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-icon time-icon">&#9201;</div>
+                    <div class="stat-info">
+                        <span class="stat-label">TIME REMAINING</span>
+                        <strong id="final-time">--:--</strong>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-icon clue-icon">&#128142;</div>
+                    <div class="stat-info">
+                        <span class="stat-label">CLUES COLLECTED</span>
+                        <strong id="final-clues">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-icon accuracy-icon">&#127919;</div>
+                    <div class="stat-info">
+                        <span class="stat-label">ACCURACY</span>
+                        <strong id="final-accuracy">100%</strong>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-icon reward-icon">&#127942;</div>
+                    <div class="stat-info">
+                        <span class="stat-label">REWARDS EARNED</span>
+                        <strong id="final-rewards">0/5</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="journey-section">
+                <div class="journey-title">
+                    <span></span>
+                    YOUR JOURNEY
+                    <span></span>
+                </div>
+
+                <div class="journey">
+                    <div class="journey-step">
+                        <div class="journey-icon desk-journey">&#128451;</div>
+                        <div class="journey-name">DESK</div>
+                        <div class="journey-reward">Desk Key</div>
+                    </div>
+                    <div class="journey-arrow">&#8594;</div>
+
+                    <div class="journey-step">
+                        <div class="journey-icon files-journey">&#128193;</div>
+                        <div class="journey-name">FILES</div>
+                        <div class="journey-reward">File Fragment</div>
+                    </div>
+                    <div class="journey-arrow">&#8594;</div>
+
+                    <div class="journey-step">
+                        <div class="journey-icon computer-journey">&#128187;</div>
+                        <div class="journey-name">COMPUTER</div>
+                        <div class="journey-reward">Terminal Code</div>
+                    </div>
+                    <div class="journey-arrow">&#8594;</div>
+
+                    <div class="journey-step">
+                        <div class="journey-icon server-journey">&#128421;</div>
+                        <div class="journey-name">SERVER</div>
+                        <div class="journey-reward">Server Key</div>
+                    </div>
+                    <div class="journey-arrow">&#8594;</div>
+
+                    <div class="journey-step">
+                        <div class="journey-icon exit-journey">&#128682;</div>
+                        <div class="journey-name">EXIT</div>
+                        <div class="journey-reward">Freedom</div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="restart-btn" class="play-again-btn">
+                â†» &nbsp; PLAY AGAIN
+            </button>
+
+            <div class="end-footer">
+                TRUTH &nbsp; â€¢ &nbsp; KNOWLEDGE &nbsp; â€¢ &nbsp; IMPACT
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
+
+    <script
+        type="module"
+        src="js/main.js">
+    </script>
+
+
+</body>
+
+
