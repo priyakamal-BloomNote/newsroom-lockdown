@@ -124,7 +124,7 @@ Score Tracking and Game Completion
 Clone the repository:
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone priyakamal-BloomNote/newsroom-lockdown
 ```
 
 Navigate to the project directory:
